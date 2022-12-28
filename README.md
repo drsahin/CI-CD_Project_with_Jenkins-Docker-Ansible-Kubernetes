@@ -70,7 +70,7 @@ Save -> Build Now
 cd /opt
 sudo wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz 
 tar -xvzf apache-maven-3.8.6-bin.tar.gz 
-mv apache-maven-3.8.6-bin maven
+mv apache-maven-3.8.6 maven
 ```
 
 - Next configure `M2_HOME` and `M2`(binary directory) environment variables and add them to the `PATH` so that we can run `maven` commands in any directory. You can search where is your JVM by using t`find / name java-11*`
@@ -123,9 +123,9 @@ amazon-linux-extras install java-openjdk11
 - Next we will install Tomcat, switch to `/opt` directory 
 
 ```sh
-wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.68/bin/apache-tomcat-9.0.68.tar.gz
-tar -xvzf apache-tomcat-9.0.68.tar.gz
-mv apache-tomcat-9.0.68.tar.gz tomcat
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.70/bin/apache-tomcat-9.0.70.tar.gz
+tar -xvzf apache-tomcat-9.0.70.tar.gz
+mv apache-tomcat-9.0.70 tomcat
 ```
 - Now we can start our Tomcat server
 
@@ -214,6 +214,7 @@ Tomcat URL: http://<Public_IP_of_Tomcat_server>:8080/
 - `Save` and `Build` the job. When go to Tomcat server under `Manager App`, you will be able to see our application under `webapp/`
 
 ![](app-v1-deployed-to-tomcat.png)
+
 ### Step3: Automate Build and Deploy using Poll SCM
 
 - We can configure our job to be triggered with `Poll SCM` by scheduling a cron job. It will check the repository based on given schedule. If there is any change in repository, it will trigger job and deployed the new version of app to Tomcat server.
@@ -238,7 +239,7 @@ Security Group:
 
 - Login to `Docker-Host` server via SSH,  switch to root user `sudo su -` and install docker
 ```sh
-yum install -y
+yum install docker -y
 ```
 
 ### Step2: Create Tomcat container
