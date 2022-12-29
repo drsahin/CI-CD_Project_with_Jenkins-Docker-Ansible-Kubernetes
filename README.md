@@ -331,9 +331,16 @@ PasswordAuthentication yes
 ```sh
 service sshd reload
 ```
+create ssh-keygen in docker-host
+sudo su -
+ssh-keygen
+cd .ssh
+cat id_rsa
+copy id_rsa key in Publish over SSH
 
 - Go to Jenkins , install `Publish over SSH` plugin. next go to `Manage Jenkins` -> `Configure System`
 Find `Publish over SSH` -> `SSH Server`. `Apply` changes and `Save`
+
 ```sh
 Name: dockerhost
 Hostname: Private IP of Docker Host(since Jenkins and Docker host are in the same VPC, they would be able to communicate over same network)
