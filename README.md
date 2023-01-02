@@ -515,7 +515,7 @@ ssh-keygen
 ssh-copy-id <private-ip-of-docker-host>
 ```
 
-- We can check connection by running below command in ansible server.
+- We can check connection by running below command in ansible server....
 ```sh
 ansible all -m ping
 ```
@@ -585,10 +585,10 @@ ssh-copy-id <private-ip-of-ansible-server>
 - Next we need to add Ansible server to our `/etc/ansible/hosts` file.
 ```sh
 [dockerhost]
-172.31.29.5    ansible_user=ansadmin
+172.31.32.5    ansible_user=ansadmin
 
 [ansible]
-172.31.84.3
+172.31.44.3
 ```
 - Now we are ready to run our playbook
 ```sh
