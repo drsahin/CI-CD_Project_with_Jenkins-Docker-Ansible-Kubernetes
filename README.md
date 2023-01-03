@@ -56,7 +56,7 @@ echo "Hello World!"
 - Now we can run our Second job to check `Github integration` is working as expected. Create another FreeStyleJob as below:
 ```sh
 SCM: Git
-URL: https://github.com/rumeysakdogan/hello-world.git
+URL: https://github.com/drsahin/CI-CD_Project_with_Jenkins-Docker-Ansible-Kubernetes.git
 Save -> Build Now
 ```
 
@@ -205,7 +205,7 @@ Save
 - Now we can create our next job with name of `BuildAndDeployJob`. After build step, the artifact will stored under `webapp/target/` directory as `webapp.war`.  
 ```sh
 Kind: Maven Project
-SCM: https://github.com/rumeysakdogan/hello-world.git
+SCM: https://github.com/drsahin/CI-CD_Project_with_Jenkins-Docker-Ansible-Kubernetes.git
 Goal and options: clean install
 Post Build Actions: Deploy war/ear to a container
 WAR/EAR files: **/*.war
@@ -522,28 +522,42 @@ ansible all -m ping
 ### Step3: Integrate Ansible with Jenkins
 
 - Go to Jenkins server, `Manage jenkins` -> `Configure System`. We need to add below information under `Publish over SSH`:
-```sh
+```
+SSH Server
 Name: ansible-server
 Hostname: Private-ip-of-Ansible-server
 username: ansadmin
-Enable user authentication
-password
-```
 
-- Now we can create our Jenkins job:
-```sh
-Name: CopyArtifactsOntoAnsible
-Copy from: BuildAndDeployOnContainer
-Post build actions: ansiblehost
-delete exec commands
+click Advanced
+click Use password authentication, or use a different key
+Enable user authentication
+Passphrase / Password : enter ansadmin password
+click Test Configuration
+see success
 ```
-- Go to ansible server, we need to create `/opt/docker` directory and give ownership to `ansadmin`
+- Go to ansible server, we need to create `/opt/docker` directory in root and give ownership to `ansadmin`
 ```sh
 cd /opt
 mkdir docker
 chown -R ansadmin:ansadmin docker
-```
 
+- Now we can create our Jenkins job:
+```sh
+Name: CopyArtifactsOntoAnsible
+select maven project
+Source Code Management:git
+Repository URL:https://github.com/drsahin/CI-CD_Project_with_Jenkins-Docker-Ansible-Kubernetes.git
+Branch Specifier (blank for 'any'):main or master
+build:
+Root POM:pom.xml
+Goals and options:clean install
+Post build actions: Send build artifacts over ssh
+SSH server: ansible-server
+TransferSet: webapp/target/*.war  or  **/*.war
+Remove prefix: webapp/target
+Remote directory: /opt/docker
+save
+```
 - Save and build the job. `webapp.war` file is successfully copied to ansible server.
 
 ### Step4: Build an Image and create container on Ansible
