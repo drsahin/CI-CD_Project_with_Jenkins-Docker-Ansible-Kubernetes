@@ -623,8 +623,8 @@ Login Succeeded
 - If we want to push an image to our dockerhub it has to be tagged with our docker username. We can tag an existing image by using `docker tag` command like shown below.
 
 ```sh
-docker tag <image-id> rumeysakdogan/regapp:tagname
-docker push rumeysakdogan/regapp:tagname
+docker tag <image-id> drsahin/regapp:tagname
+docker push drsahin/regapp:tagname
 ```
 
 - Now we can update our playbook to add new tasks.
@@ -638,10 +638,10 @@ docker push rumeysakdogan/regapp:tagname
       args:
         chdir: /opt/docker
     - name: create tag to push image onto dockerhub
-      command: docker tag regapp:latest rumeysakdogan/regapp:latest
+      command: docker tag regapp:latest drsahin/regapp:latest
 
     - name: push docker image
-      command: docker push rumeysadogan/regapp:latest
+      command: docker push drsahin/regapp:latest
 ```
 
 - We can dry-run our playbook by giving `--check` flag.
