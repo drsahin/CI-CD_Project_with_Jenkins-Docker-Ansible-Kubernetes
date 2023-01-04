@@ -481,6 +481,7 @@ On Docker Host:
 sudo su -
 useradd ansadmin
 passwd ansadmin
+usermod -aG docker ansadmin
 visudo
 ```
 - Add `ansadmin` to `sudoers` file
