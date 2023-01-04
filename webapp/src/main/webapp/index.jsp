@@ -31,8 +31,7 @@ i    <br>
     <p>Already have an account? <a href="#">Sign in</a>.</p>
   </div>
 
-   <h1> Thankyou, Happy Learning. DevOps Team !!! </h1>
-   <h1> AZMİN ELİNDEN KİM KURTULMUŞ Kİ    !!!!!!!! </h1>
+   <h1> Thankyou, Happy Learning. DevOps Team !!! azmin elinden kim kurtulur...  </h1>
 
   
 </form>
