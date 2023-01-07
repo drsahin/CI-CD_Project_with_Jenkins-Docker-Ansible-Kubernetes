@@ -682,7 +682,7 @@ or imperative exec command: ansible dockerhost -m shell -a 'docker run -d --name
 - create a new container
 ``` 
 
-- We will make the below updates in our `regapp-deploy.yml` file
+- We will make the below updates in our `create_docker_container.yml` file
 ```yaml
 ---
 - hosts: dockerhost
@@ -704,12 +704,77 @@ or imperative exec command: ansible dockerhost -m shell -a 'docker run -d --name
       command: docker run -d --name regapp-server -p 8082:8080 drsahin/regapp:latest 
       ignore_errors: yes
 ```
-
 - It is time to configure our existing Jenkins job `CopyArtifactsOntoAnsible` , we will add below commands to exec command part under SSH Host.
+
+1.Send files or execute commands over SSH:
+SSH Server
+Name:ansible-server
+Transfer Set
+Source files:webapp/target/*.war
+Remove prefix:webapp/target
+Remote directory://opt//docker
+
+2.Send files or execute commands over SSH:
+SSH Server
+Name:ansible-server
+Transfer Set
+Source files:Dockerfile regapp.yml create_docker_container.yml
+Remove prefix:-
+Remote directory://opt//docker
+Exec command:
 ```sh
+cd /opt/docker
 ansible-playbook /opt/docker/regapp.yml;
 sleep 10;
-ansible-playbook /opt/docker/regapp-deploy.yml
+ansible-playbook /opt/docker/create_docker_container.yml
+```
+
+### Step9: automatic Create container on dockerhost using ansible playbook in ansible-server 
+We will do all the operations on dockerhost.
+- We will make the below updates in our `regapp.yml` file
+```get the name regapp1.yml
+---
+- hosts: dockerhost   #step-8 was also working in ansible-server. Now we will run it on dockerhost.
+  tasks:
+    - name: create docker image
+      command: docker build -t regapp:latest .
+      args:
+        chdir: /opt/docker
+    - name: create tag to push image onto dockerhub
+      command: docker tag regapp:latest drsahin/regapp:latest
+
+    - name: push docker image
+      command: docker push drsahin/regapp:latest
+      
+      
+- It is time to configure our existing Jenkins job `CopyArtifactsOntoAnsible` , we will add below commands to exec command part under SSH Host.
+
+1.Send files or execute commands over SSH:
+SSH Server
+Name:ansible-server
+Transfer Set
+Source files:webapp/target/*.war
+Remove prefix:webapp/target
+Remote directory://opt//docker
+
+2.Send files or execute commands over SSH:
+SSH Server
+Name:ansible-server
+Transfer Set
+Source files:Dockerfile regapp.yml create_docker_container.yml
+Remove prefix:-
+Remote directory://opt//docker
+Exec command:
+```sh
+cd /opt/docker
+ansible agents -m copy -a 'src=/opt/docker/Dockerfile dest=/opt/docker/'
+ansible agents -m copy -a 'src=/opt/docker/webapp.war dest=/opt/docker/'
+ansible agents -m copy -a 'src=/opt/docker/regapp.yml dest=/opt/docker/'
+ansible agents -m copy -a 'src=/opt/docker/create_docker_container.yml dest=/opt/docker/'
+sleep 10;
+ansible-playbook /opt/docker/regapp.yml;
+sleep 10;
+ansible-playbook /opt/docker/create_docker_container.yml
 ```
 
 ## Kubernetes cluster on AWS using eksctl
