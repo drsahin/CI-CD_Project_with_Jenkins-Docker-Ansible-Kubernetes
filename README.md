@@ -659,6 +659,7 @@ ansible-playbook regapp.yml --check
 under SSH server:
 host: ansiblehost
 exec command: ansible-playbook /opt/docker/regapp.yml
+or imperative exec command: ansible dockerhost -m shell -a 'docker run -d --name regapp-server -p 8082:8080 drsahin/regapp:latest'
 ```
 ### Step8: Create container on dockerhost using ansible playbook
 
@@ -670,8 +671,9 @@ exec command: ansible-playbook /opt/docker/regapp.yml
 
   tasks:
     - name: create container
-      command: docker run -d --name regapp-server -p 8082:8080 rumeysakdogan/regapp:latest 
+      command: docker run -d --name regapp-server -p 8082:8080 drsahin/regapp:latest 
 ```
+
 
 - But we have a problem in this playbook, when we try to run the same playbook again, it will give an error saying `regapp-server container already exists.` To fix this problem, we will add below tasks to our playbook.
 ```yaml
@@ -695,11 +697,11 @@ exec command: ansible-playbook /opt/docker/regapp.yml
       ignore_errors: yes
 
     - name: remove the existing image
-      command: docker rmi rumeysakdogan/regapp:latest
+      command: docker rmi drsahin/regapp:latest
       ignore_errors: yes
 
     - name: create container
-      command: docker run -d --name regapp-server -p 8082:8080 rumeysakdogan/regapp:latest 
+      command: docker run -d --name regapp-server -p 8082:8080 drsahin/regapp:latest 
       ignore_errors: yes
 ```
 
