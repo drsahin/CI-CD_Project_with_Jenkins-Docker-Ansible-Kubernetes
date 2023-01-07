@@ -732,7 +732,7 @@ ansible-playbook /opt/docker/create_docker_container.yml
 ### Step9: automatic Create container on dockerhost using ansible playbook in ansible-server 
 We will do all the operations on dockerhost.
 - We will make the below updates in our `regapp.yml` file
-```get the name regapp1.yml
+``` name is regapp1.yml
 ---
 - hosts: dockerhost   #step-8 was also working in ansible-server. Now we will run it on dockerhost.
   tasks:
@@ -761,7 +761,7 @@ Remote directory://opt//docker
 SSH Server
 Name:ansible-server
 Transfer Set
-Source files:Dockerfile regapp.yml create_docker_container.yml
+Source files:Dockerfile regapp1.yml create_docker_container.yml
 Remove prefix:-
 Remote directory://opt//docker
 Exec command:
@@ -772,7 +772,7 @@ ansible agents -m copy -a 'src=/opt/docker/webapp.war dest=/opt/docker/'
 ansible agents -m copy -a 'src=/opt/docker/regapp.yml dest=/opt/docker/'
 ansible agents -m copy -a 'src=/opt/docker/create_docker_container.yml dest=/opt/docker/'
 sleep 10;
-ansible-playbook /opt/docker/regapp.yml;
+ansible-playbook /opt/docker/regapp1.yml;
 sleep 10;
 ansible-playbook /opt/docker/create_docker_container.yml
 ```
