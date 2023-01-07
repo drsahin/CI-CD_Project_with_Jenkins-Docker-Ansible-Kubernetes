@@ -1,5 +1,5 @@
 ---
-- hosts: agents
+- hosts: dockerhost
 
   tasks:
     - name: stop existing container

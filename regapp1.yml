@@ -1,5 +1,5 @@
 ---
-- hosts: ansible
+- hosts: dockerhost
   
   tasks:
     - name: create docker image
