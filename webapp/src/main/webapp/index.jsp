@@ -31,7 +31,7 @@
     <p>Already have an account? <a href="#">Sign in</a>.</p>
   </div>
 
-   <h1> Thankyou, Happy Learning. DevOps Team !!! Azmin elinden kim kurtulur ki...</h1>
+   <h1> Thankyou, Happy Learning. DevOps Team !!! FİNİSH...</h1>
 
   
 </form>
