@@ -359,7 +359,7 @@ provide password
 ```sh
 Name: BuildAndDeployOnContainer
 Type: Maven Project
-SCM: https://github.com/rumeysakdogan/hello-world.git
+SCM: ttps://github.com/drsahin/hello-world.git
 POLL SCM: * * * * *
 Build Goals: clean install
 Post build actions: Send build artifacts over ssh
@@ -776,6 +776,44 @@ ansible-playbook /opt/docker/regapp1.yml;
 sleep 10;
 ansible-playbook /opt/docker/create_docker_container.yml
 ```
+
+### Part-10 : Deploy with Version Control Containers
+So for we used latest docker image to build a container, but what happens if latest version is not working?
+One easiest solution is, maintaining version for each build. This can be achieved by using environment variables.
+
+here we use 2 variables
+
+BUILD_ID - The current build id
+JOB_NAME - Name of the project of this build. This is the name you gave your job when you first set it up.
+
+Create Jenkins job
+Name: project
+select maven project
+Source Code Management:git
+Repository URL:https://github.com/drsahin/CI-CD_Project_with_Jenkins-Docker-Ansible-Kubernetes.git
+Branch Specifier (blank for 'any'):main or master
+build:
+Root POM:pom.xml
+Goals and options : clean install package
+
+-Send files or execute commands over SSH
+Name: ansible_server
+Source files : webapp/target/*.war
+Remove prefix : webapp/target
+Remote directory : //opt//docker
+
+-Send files or execute commands over SSH
+Name: ansible_server
+Source files : Dockerfile
+Remote directory : //opt//docker
+cd /opt/docker
+docker build -t $JOB_NAME:v1.$BUILD_ID .
+docker tag $JOB_NAME:v1.$BUILD_ID drsahin/$JOB_NAME:v1.$BUILD_ID
+docker tag $JOB_NAME:v1.$BUILD_ID drsahin/$JOB_NAME:latest
+docker push drsahin/$JOB_NAME:v1.$BUILD_ID
+docker push drsahin/$JOB_NAME:latest
+docker rmi $JOB_NAME:v1.$BUILD_ID drsahin/$JOB_NAME:v1.$BUILD_ID
+drsahin/$JOB_NAME:latest
 
 ## Kubernetes cluster on AWS using eksctl
 
