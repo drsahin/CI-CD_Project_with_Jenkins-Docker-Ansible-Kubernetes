@@ -777,14 +777,15 @@ sleep 10;
 ansible-playbook /opt/docker/create_docker_container.yml
 ```
 
-### Part-10: Deploy with Version Control Containers
+### Step-10: Deploy with Version Control Containers
 - So for we used latest docker image to build a container, but what happens if latest version is not working?
 One easiest solution is, maintaining version for each build. This can be achieved by using environment variables.
 
 here we use 2 variables
 
-BUILD_ID - The current build id
-JOB_NAME - Name of the project of this build. This is the name you gave your job when you first set it up.
+- BUILD_ID - The current build id
+- JOB_NAME - Name of the project of this build. This is the name you gave your job when you first set it up.
+
 ```sh
 Create Jenkins job
 Name: project
